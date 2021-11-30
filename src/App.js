@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import './App.css';
 import Form from './components/form';
 import End from './components/end';
+import { Routes, Route } from 'react-router-dom';
+
+// import QuestionPage from './components/question';
 
 const Questions = [{
   id: 1,
@@ -50,22 +53,37 @@ function App() {
   }
   return (
     <div className="App">
-      {step === 1 &&
-        <Form
-          questions={questions}
-          setQuestions={setQuestions}
-          numberOfQuestions={questions.length}
+      {/* <div>
+        <nav>
+          <ul>
+            <li><NavLink to="/quiz">Quiz</NavLink></li>
+            <li><NavLink to="/quiz_result">Quiz_result</NavLink></li>
+          </ul>
+        </nav>
+      </div> */}
+      <Routes>
+
+        <Route path="/" element={
+          <Form
+            questions={questions}
+            setQuestions={setQuestions}
+            numberOfQuestions={questions.length}
+            activeQuestion={activeQuestion}
+            setActiveQuestion={setActiveQuestion}
+            onsetStep={SetStep}
+            step={step}
+          />} />
+        {/* <Route path="question" element={<QuestionPage questions={questions}
           activeQuestion={activeQuestion}
-          setActiveQuestion={setActiveQuestion}
-          onsetStep={SetStep}
-          step={step}
-        />}
-      {step === 2 &&
-        <End
-          data={questions}
-          onReset={resetClickHandler}
-        />
-      }
+          setQuestions={setQuestions} />} /> */}
+        <Route path="/quiz_result"
+          element={<End
+            data={questions}
+            onReset={resetClickHandler}
+          />} />
+
+      </Routes>
+
     </div>
   );
 }

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "./header";
 import classes from './form.module.css';
 
+
 const End = ({ data, onReset }) => {
     const [correctAnswers, setCorrectAnswers] = useState(0)
     console.log(data)
@@ -16,7 +17,7 @@ const End = ({ data, onReset }) => {
         });
         setCorrectAnswers(correct);
 
-    }, [])
+    }, [data])
 
 
     return (

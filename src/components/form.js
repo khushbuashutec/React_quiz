@@ -1,20 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import Header from './header'
 import classes from './form.module.css';
+import { useNavigate, Route, Routes, Link } from "react-router-dom";
+import Question from "./question";
 
 const Form = ({ questions, setQuestions, numberOfQuestions, activeQuestion, setActiveQuestion, onsetStep, step, }) => {
 
     const [error, setError] = useState('')
-    const radiosWrapper = useRef('')
 
-    useEffect(() => {
-        const findCheckInput = radiosWrapper.current.querySelector('input:checked');
-
-        if (findCheckInput) {
-            console.log(findCheckInput);
-        }
-
-    }, [activeQuestion])
+    let navigate = useNavigate();
 
 
     const changeHandler = (e) => {
@@ -39,7 +33,7 @@ const Form = ({ questions, setQuestions, numberOfQuestions, activeQuestion, setA
             setActiveQuestion(activeQuestion + 1)
         }
         else {
-            onsetStep(2)
+            navigate("/quiz_result");
         }
     }
 
@@ -54,24 +48,22 @@ const Form = ({ questions, setQuestions, numberOfQuestions, activeQuestion, setA
     console.log(questions[activeQuestion], questions, activeQuestion)
     return (
         <>
+
             <div className={classes.container}>
                 <Header />
-                <div className={classes.main}>
-                    <div>
-                        <h2>Question {questions[activeQuestion]?.id}:</h2>
-                    </div>
-                    <div>
-                        {questions[activeQuestion].question}
-                    </div>
-                    <div className={classes.radio} >
-                        {questions[activeQuestion].choices.map((choice, i) => (
-                            <label key={i} ref={radiosWrapper} >
-                                <input type="radio" name='answer' value={choice} checked={Number(choice) === questions[activeQuestion]?.a} onChange={changeHandler} />
-                                {choice} </label>
-                        ))}
-                    </div>
+                {/* <Routes>
+                    <Route path="/question" element={<Question questions={questions}
+                        activeQuestion={activeQuestion}
+                        changeHandler={changeHandler}
+                    />}>
 
-                </div>
+                    </Route>
+                </Routes> */}
+                <Question
+                    questions={questions}
+                    activeQuestion={activeQuestion}
+                    changeHandler={changeHandler}
+                />
                 {error && alert(error)}
                 <div className={classes.buttons} >
                     {activeQuestion > 0 && <button className={classes.button} value="previous" onClick={previousClickHandler}>Prev </button>}
@@ -81,4 +73,7 @@ const Form = ({ questions, setQuestions, numberOfQuestions, activeQuestion, setA
         </>
     )
 }
+
+
+
 export default Form
