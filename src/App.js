@@ -3,8 +3,8 @@ import './App.css';
 import Form from './components/form';
 import End from './components/end';
 import { Routes, Route } from 'react-router-dom';
+import Question from './components/question';
 
-// import QuestionPage from './components/question';
 
 const Questions = [{
   id: 1,
@@ -43,7 +43,7 @@ function App() {
   const [step, SetStep] = useState(1)
   const [questions, setQuestions] = useState(Questions)
   const [activeQuestion, setActiveQuestion] = useState(0)
-
+  const [error, setError] = useState('')
 
   const resetClickHandler = () => {
     setActiveQuestion(0)
@@ -51,16 +51,23 @@ function App() {
     SetStep(1)
     questions.forEach((data) => data.a = 0);
   }
+
+  const changeHandler = (e) => {
+
+    const updatedAnswer = questions.map((x, i) => {
+        if (i === activeQuestion) {
+            x.a = Number(e.target.value)
+        }
+        return x
+    })
+    setQuestions(updatedAnswer)
+    if (error) {
+        setError('')
+    }
+}
   return (
     <div className="App">
-      {/* <div>
-        <nav>
-          <ul>
-            <li><NavLink to="/quiz">Quiz</NavLink></li>
-            <li><NavLink to="/quiz_result">Quiz_result</NavLink></li>
-          </ul>
-        </nav>
-      </div> */}
+     
       <Routes>
 
         <Route path="/" element={
@@ -72,10 +79,13 @@ function App() {
             setActiveQuestion={setActiveQuestion}
             onsetStep={SetStep}
             step={step}
-          />} />
-        {/* <Route path="question" element={<QuestionPage questions={questions}
-          activeQuestion={activeQuestion}
-          setQuestions={setQuestions} />} /> */}
+          />} >
+        <Route path="/:id" element={<Question
+                    questions={questions}
+                    activeQuestion={activeQuestion}
+                    changeHandler={changeHandler}
+                /> } />
+          </Route>
         <Route path="/quiz_result"
           element={<End
             data={questions}

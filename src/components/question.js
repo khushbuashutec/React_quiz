@@ -1,11 +1,12 @@
 import React, { useRef, useEffect } from "react";
 import classes from './form.module.css';
-import { Link } from 'react-router-dom'
+
 
 const Question = ({ questions, activeQuestion, changeHandler }) => {
 
     const radiosWrapper = useRef('')
-    console.log(questions);
+ 
+    console.log(questions,activeQuestion,changeHandler);
     useEffect(() => {
         const findCheckInput = radiosWrapper.current.querySelector('input:checked');
 
@@ -18,7 +19,7 @@ const Question = ({ questions, activeQuestion, changeHandler }) => {
     return (
         <>
             <div className={classes.main}>
-                <Link to="/question" />
+               
                 <div>
                     <h2>Question {questions[activeQuestion].id}:</h2>
                 </div>

@@ -1,29 +1,32 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState,useEffect} from "react";
 import Header from './header'
 import classes from './form.module.css';
-import { useNavigate, Route, Routes, Link } from "react-router-dom";
+import { useNavigate,Routes,Route } from "react-router-dom";
 import Question from "./question";
 
-const Form = ({ questions, setQuestions, numberOfQuestions, activeQuestion, setActiveQuestion, onsetStep, step, }) => {
+const Form = ({ questions,setQuestions,  numberOfQuestions, activeQuestion, setActiveQuestion}) => {
 
     const [error, setError] = useState('')
 
     let navigate = useNavigate();
+    // let param=useParams();
 
+   useEffect(()=>{
+    navigate(`/:${questions[activeQuestion].id}`)
+   },[navigate,activeQuestion,questions])
+   const changeHandler = (e) => {
 
-    const changeHandler = (e) => {
-
-        const updatedAnswer = questions.map((x, i) => {
-            if (i === activeQuestion) {
-                x.a = Number(e.target.value)
-            }
-            return x
-        })
-        setQuestions(updatedAnswer)
-        if (error) {
-            setError('')
+    const updatedAnswer = questions.map((x, i) => {
+        if (i === activeQuestion) {
+            x.a = Number(e.target.value)
         }
+        return x
+    })
+    setQuestions(updatedAnswer)
+    if (error) {
+        setError('')
     }
+}
 
     function nextClickHandler(e) {
         if (questions[activeQuestion].a === 0) {
@@ -48,22 +51,18 @@ const Form = ({ questions, setQuestions, numberOfQuestions, activeQuestion, setA
     console.log(questions[activeQuestion], questions, activeQuestion)
     return (
         <>
-
+            
             <div className={classes.container}>
                 <Header />
                 {/* <Routes>
-                    <Route path="/question" element={<Question questions={questions}
-                        activeQuestion={activeQuestion}
-                        changeHandler={changeHandler}
-                    />}>
-
-                    </Route>
-                </Routes> */}
-                <Question
+                    <Route element={<Question
                     questions={questions}
                     activeQuestion={activeQuestion}
                     changeHandler={changeHandler}
-                />
+                />}>
+                    </Route>
+                </Routes> */}
+            
                 {error && alert(error)}
                 <div className={classes.buttons} >
                     {activeQuestion > 0 && <button className={classes.button} value="previous" onClick={previousClickHandler}>Prev </button>}
